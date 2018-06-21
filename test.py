@@ -1,0 +1,2 @@
+from erweb import defaultapp
+
