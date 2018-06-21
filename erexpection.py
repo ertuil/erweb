@@ -10,3 +10,6 @@ class RoutePathIllegalException(ErwebBaseException):
 
 class RouteAddfailedException(Exception):
     pass
+
+class PageNotFonudError(Exception):
+    pass

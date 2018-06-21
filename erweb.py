@@ -1,7 +1,4 @@
-
-
 import re
-
 from __init__ import *
 
 
@@ -48,15 +45,14 @@ class Request():
 ###############################################################################
 
 # '/' => [('/',-1)]
-# '/users/admin' => [('users','static'),('admin','static')]
-# '/users/<int:id>' => [('users','static'),('id','int')]
-
-
-
+# '/users/admin' => [('static','users'),('static','admin')]
+# '/users/<int:id>' => [('static','users'),('int','id')]
+# <int:num>,<str:name>,<path:filename>,<re:[a-z]:str1> ... 
 
 class Route():
     def __init__(self):
         self._route = {}
+        self._error = {}
 
     def _parse(self,url):
         _ans = []
@@ -64,11 +60,11 @@ class Route():
         for _ii in _url:
             if _ii[0] == '<' and _ii[-1] == '>':
                 _tmp = _ii[1:-1].split(':')
-                if _tmp[0] not in ['int','str','path','file','re']:
+                if _tmp[0] not in ['int','str','path','re']:
                     raise RoutePathIllegalException
                 _ans.append(tuple(_tmp))
             else:
-                _ans.append((_ii,'static'))
+                _ans.append(('static',_ii))
         return _ans
 
     def add_route(self,url,func,name = None):
@@ -83,11 +79,46 @@ class Route():
         self._route.pop(name)
         print(self._route)
 
-    def get_func(self,url):
-        pass
-
-
-
+    def __call__(self,env):
+        url = env.URL
+        _url = [x for x in re.split("/",url.strip()) if x != '']
+        _var = {}
+        for _ii in self._route.values():
+            _rule = _ii[1]
+            if len(_rule) > len(_url):
+                continue
+            _flag = True
+            for jj in range(len(_rule)):
+                if _rule[jj][0] == 'static' and _rule[jj][1] == _url[jj]:
+                    continue
+                elif _rule[jj][0] == 'static' and _rule[jj][1] != _url[jj]:
+                    _flag = False
+                    break
+                if _rule[jj][0] == 'int' and _url[jj].isdigit():
+                    _var[_rule[jj][1]] = int(_url[jj])
+                    continue
+                elif _rule[jj][0] == 'int' and not _url[jj].isdigit():
+                    _flag = False
+                    break
+                if _rule[jj][0] == 'str':
+                    _var[_rule[jj][1]] = _url[jj]
+                    continue
+                if _rule[jj][0] == 're':
+                    _reg = _rule[jj][1]
+                    if re.fullmatch(_reg,_url[jj]):
+                        if len(_rule[jj]) > 2:
+                            _var[_rule[jj][2]] = _url[jj]
+                        continue
+                    else:
+                        _flag = False
+                        break
+                if _rule[jj][0] == 'path':
+                    _var[_rule[jj][1]] = '/'.join(_url[jj:])
+                    break
+            if _flag == True:
+                return _ii[0](env,_var)
+        print(_var)
+        return None
 
 ###############################################################################
 ####### Response ##############################################################
@@ -104,6 +135,9 @@ class Response():
 ###############################################################################
 ####### Configure #############################################################
 ############################################################################### 
+
+class Configure():
+    pass
 
 
 ###############################################################################
@@ -126,17 +160,11 @@ class Erweb():
     def __call__(self,env, proc):
         self.env = env
         self.proc = proc
+
         self.proc('200 OK', [('Content-Type', 'text/html')])
+
         req = Request(self.env)
-        print(req.POST)
-        print(req.SESSION_ID)
-        a = '''
-          <form action="" method="post">
-        <p>First name: <input type="text" name="fname" /></p>
-        <p>Last name: <input type="text" name="lname" /></p>
-        <input type="submit" value="Submit" />
-          </form>
-          '''
+        a = self.router(req)
 
         return [bytes(a,'utf-8')]
 
