@@ -1,5 +1,5 @@
 import re
-from __init__ import *
+from erexpection import *
 
 
 ###############################################################################
@@ -52,7 +52,9 @@ class Request():
 class Route():
     def __init__(self):
         self._route = {}
-        self._error = {}
+        self._post_route = {}
+        self._get_route = {}
+        self._error_route = {}
 
     def _parse(self,url):
         _ans = []
@@ -67,23 +69,38 @@ class Route():
                 _ans.append(('static',_ii))
         return _ans
 
-    def add_route(self,url,func,name = None):
+    def add_route(self,url,func,name = None,method = None):
         if not hasattr(func, '__call__') :
             raise RouteAddfailedException
         if not name:
             name = url
-        self._route[name] = (func,self._parse(url))
-        print(self._route)
+        if method == 'get':
+            self._get_route[name] = (func,self._parse(url))
+        elif method == 'post':
+            self._post_route[name] = (func,self._parse(url))
+        else:
+            self._route[name] = (func,self._parse(url))
 
-    def del_route(self,name):
-        self._route.pop(name)
-        print(self._route)
+    def del_route(self,name,method = None):
+        if method == 'get':
+            self._get_route.pop(name)
+        elif method == 'post':
+            self._post_route.pop(name)
+        else:
+            self._route.pop(name)
 
     def __call__(self,env):
         url = env.URL
         _url = [x for x in re.split("/",url.strip()) if x != '']
         _var = {}
-        for _ii in self._route.values():
+        if env.METHOD == 'GET':
+            _tmp_route = dict(self._route,**self._get_route)
+        elif env.METHOD == 'POST':
+            _tmp_route = dict(self._route,**self._post_route)
+        else:
+            _tmp_route = self._route
+
+        for _ii in _tmp_route.values():
             _rule = _ii[1]
             if len(_rule) > len(_url):
                 continue
@@ -117,7 +134,6 @@ class Route():
                     break
             if _flag == True:
                 return _ii[0](env,_var)
-        print(_var)
         return None
 
 ###############################################################################
