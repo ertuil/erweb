@@ -1,4 +1,5 @@
 import re
+import importlib
 from erexpection import *
 
 
@@ -152,8 +153,16 @@ class Response():
 ####### Configure #############################################################
 ############################################################################### 
 
-class Configure():
-    pass
+# load config from a .py file
+
+class Configure(dict):
+    def __init__(self, *args, **kwargs):
+        super(Configure, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+    
+    def load(self,filename):
+        pass
+
 
 
 ###############################################################################
