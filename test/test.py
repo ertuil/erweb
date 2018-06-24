@@ -4,15 +4,13 @@ sys.path.append('../')
 
 from erweb import defaultapp,Route,Configure
 import test_config as cfg
-from erweb.jardb import jardb
 
+
+defaultapp.set_config(cfg)
 route = defaultapp.router
 
-con = defaultapp.config
+db = defaultapp.database
 
-con.load(cfg)
-
-db = jardb("json://database.db")
 db.create()
 
 db.create_table('Users',{})

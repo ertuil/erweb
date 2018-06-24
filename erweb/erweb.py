@@ -6,6 +6,7 @@ from erweb.__init__ import __version__
 from erweb.errequest import Request
 from erweb.erconfigure import Configure
 from erweb.erroute import Route
+from erweb.jardb import jardb
 
 ###############################################################################
 ####### Response ##############################################################
@@ -46,6 +47,9 @@ class Erweb():
 
     def set_config(self,cfg):
         self.config.load(cfg)
+        if self.config["use_interal_db"]:
+            self.database = jardb(self.config["db_url"])
+    
 
             
 defaultapp = Erweb()

@@ -28,7 +28,7 @@ class Configure(dict):
 
     def _load_config(self):
         self["version"] = __version__
-        config_list = ["URLs","salt"]
+        config_list = ["URLs","salt","db_url","use_interal_db"]
         for tt in config_list:
             self._get_settings(tt)
     
