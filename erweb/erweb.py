@@ -195,13 +195,9 @@ class Configure(dict):
 
     def _load_config(self):
         self["version"] = __version__
-        self._get_settings("Database")
-
-
-    
-        
-        
-
+        config_list = ["Datebase"]
+        for tt in config_list:
+            self._get_settings(tt)
 
 
 ###############################################################################
