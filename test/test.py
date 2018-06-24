@@ -1,12 +1,15 @@
 import sys
 sys.path.append('../')
 
+
 from erweb import defaultapp,Route,Configure
+import test_config as cfg
 
 route = defaultapp.router
 #route.add_route('/baidu.com/<int:123>/<str:name>/<re:time:[1|2|3]>',str,'main')
 con = defaultapp.config
-con.load("test_config.py")
+
+con.load(cfg)
 
 
 def aaa(req,var):
