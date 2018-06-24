@@ -2,8 +2,8 @@ import re
 import importlib
 
 
-from .__init__ import __version__
-import erconfig as default_config
+from erweb.__init__ import __version__
+import erweb.erconfig as default_config
 
 
 ###############################################################################
@@ -177,23 +177,27 @@ class Response():
 class Configure(dict):
     def __init__(self, *args, **kwargs):
         super(Configure, self).__init__(*args, **kwargs)
-        self._default_mod = importlib.import_module("erconfig")
         self.__dict__ = self
+        self._default_config = default_config
     
-    def load(self,path):
+    def load(self,mod):
         try:
-            self.mod = importlib.import_module(path)
+            self.mod = mod
         except :
-            self.mod = self._default_mod
+            self.mod = self._default_config
         self._load_config()
+
+    def _get_settings(self,key):
+        try:
+            self[key] = getattr(self.mod,key)
+        except AttributeError:
+            self[key] = getattr(self._default_config,key)
 
     def _load_config(self):
         self["version"] = __version__
-        try:
-            self["Database"] = getattr(self.mod,"Database")
-        except AttributeError:
-            self["Database"] = getattr(self._default_mod,"Database")
-        print(self['Database'])
+        self._get_settings("Database")
+
+
     
         
         
