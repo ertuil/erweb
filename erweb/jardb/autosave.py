@@ -76,7 +76,7 @@ class Autosave(threading.Thread):
                 os.rename(self._filename+'.swp',self._filename)
                 file_lock.release()
 
-            for i in range(0,5):
+            for _ in range(0,5):
                 if self._is_run.is_set():
                     time.sleep(1)
                 # else :

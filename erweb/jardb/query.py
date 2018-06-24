@@ -1,7 +1,7 @@
 from erweb.jardb import compose
-from erweb.jardb.util import *
-from erweb.jardb.errors import *
-from erweb.jardb.dblogging import *
+from erweb.jardb.util import cache,check_string,convert_set
+from erweb.jardb.errors import DbInsertException,DbInsertNotNullExcption,DbInsertUniqueExcption
+from erweb.jardb.dblogging import dblog
 from erweb.jardb.autosave import auto
 
 class BaseQuery(object):

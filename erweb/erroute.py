@@ -15,8 +15,7 @@ class Route():
         self._route = {}
         self._post_route = {}
         self._get_route = {}
-        self._error_route = {}
-
+        
     def _parse(self,url):
         _ans = []
         _url = [x for x in re.split("/",url.strip()) if x != '']

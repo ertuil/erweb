@@ -9,22 +9,6 @@ from erweb.erroute import Route
 from erweb.jardb import jardb
 
 ###############################################################################
-####### Response ##############################################################
-###############################################################################
-
-class Response():
-    def __init__(self):
-        pass
-
-###############################################################################
-####### Database ##############################################################
-###############################################################################
-
-###############################################################################
-####### Template ##############################################################
-############################################################################### 
-
-###############################################################################
 ####### APP ###################################################################
 ###############################################################################
 
@@ -34,22 +18,22 @@ class Erweb():
         self.router = Route()
         self.config = Configure()
 
-    def __call__(self,env, proc):
-        self.env = env
-        self.proc = proc
+    def __call__(self,environ,start_response):
+        _env = environ
+        _proc = start_response
 
-        self.proc('200 OK', [('Content-Type', 'text/html')])
+        req = Request(_env)
+        res = self.router(req)
 
-        req = Request(self.env)
-        a = self.router(req)
-
-        return [bytes(a,'utf-8')]
+        return self.set_response(_proc,res)
+    
+    def set_response(self,_proc,res):
+        _proc(res.status,res.headers)
+        return res.body
 
     def set_config(self,cfg):
         self.config.load(cfg)
         if self.config["use_interal_db"]:
             self.database = jardb(self.config["db_url"])
-    
-
-            
+      
 defaultapp = Erweb()

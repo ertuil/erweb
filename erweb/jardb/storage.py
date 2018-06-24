@@ -2,7 +2,6 @@ from erweb.jardb import compose
 import json
 import pickle
 import os
-from erweb.jardb.errors import *
 
 class BaseStorage(object):
     '''

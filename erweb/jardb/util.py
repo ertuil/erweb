@@ -24,7 +24,7 @@ def check_attr(_attr):
     '''
     if not isinstance(_attr,dict):
         return False
-    for k,v in _attr.items():
+    for _,v in _attr.items():
         if not isinstance(v,list):
             return False
         for i in v:

@@ -1,5 +1,5 @@
 import json
-from erweb.jardb.errors import *
+from erweb.jardb.errors import DbEncodeException,DbDecodeException
 
 class DbBaseObject(object):
     '''
