@@ -12,7 +12,7 @@ class BaseResponse():
 
     def set_cookies(self,name,value,max_age = 0,expires = None,path='/',domain=None,secure=False,httponly=False):
         sha = hashlib.sha256()
-        _value = sha.update(value.encode())
+        sha.update(value.encode())
         _tmp = name+"="+sha.hexdigest()
         if max_age != 0:
             _tmp += ";max_age="+str(max_age)
@@ -36,9 +36,10 @@ class HTTPResponse(BaseResponse):
         super(HTTPResponse,self).__init__()
         self.headers = [('Content-type', 'text/html')]
         self.body.append(info.encode())
-    
 
-    
-
-
-
+class ErrorResponse(BaseResponse):
+    def __init__(self,status,info):
+        super(ErrorResponse,self).__init__()
+        self.status = status
+        self.headers = [('Content-type', 'text/html')]
+        self.body.append(info.encode())

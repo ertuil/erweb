@@ -1,5 +1,6 @@
 import re
-from erweb.erexpection import RoutePathIllegalException,RouteAddfailedException
+from erweb.erexpection import RoutePathIllegalException,RouteAddfailedException,HTTPException
+from erweb.erresponse import ErrorResponse
 
 ###############################################################################
 ####### Route #################################################################
@@ -15,6 +16,10 @@ class Route():
         self._route = {}
         self._post_route = {}
         self._get_route = {}
+        self._error_route = {}
+        self._error_route[404] = http_404_handle
+        self._error_route[403] = http_403_handle
+        self._error_route[500] = http_500_handle
         
     def _parse(self,url):
         _ans = []
@@ -40,6 +45,9 @@ class Route():
             self._post_route[name] = (func,self._parse(url))
         else:
             self._route[name] = (func,self._parse(url))
+        
+    def add_error_route(self,status,func):
+        self._error_route[status] = func
 
     def del_route(self,name,method = None):
         if method == 'get':
@@ -48,6 +56,10 @@ class Route():
             self._post_route.pop(name)
         else:
             self._route.pop(name)
+
+    def handle_error(self,status,env):
+        return self._error_route[status](env)
+
 
     def __call__(self,env):
         url = env.URL
@@ -94,4 +106,33 @@ class Route():
                     break
             if _flag == True:
                 return _ii[0](env,_var)
-        return None
+        raise HTTPException('404 Not Found',404)
+
+###############################################################################
+####### Error Handles #########################################################
+###############################################################################
+
+# This is the default handle for HTTP ERRORS
+
+def http_404_handle(env,var = None):
+    _info = """
+    <h1> 404 Not Found!</h1>
+    <p>The server is powered by erweb</p>
+    """
+    return ErrorResponse("404 Not Found",_info)
+
+def http_403_handle(env,var = None):
+    _info = """
+    <h1> 403 Forbidden!</h1>
+    <p>The server is powered by erweb</p>
+    """
+    return ErrorResponse("403 Forbidden",_info)
+
+def http_500_handle(env,var = None):
+    _info = """
+    <h1> 500 Oops!</h1>
+    <p>Server crashed!</p>
+    <p>The server is powered by erweb</p>
+    """
+    return ErrorResponse("500 Server Error",_info)
+
