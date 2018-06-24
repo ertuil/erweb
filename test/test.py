@@ -27,12 +27,12 @@ def aaa(req,var):
             <p>Last name: <input type="text" name="lname" /></p>
             <input type="submit" value="Submit" />
           </form>'''
+    return a
 
-    res = HTTPResponse(a)
-    res.set_cookies('name',"value",max_age=9999)
-    return res
-
+def bbb(req,var):
+    return HTTPResponse("index.html")
 
 route.add_route('/index.html/<int:a>/<str:name>/<re:[a-c][1-9]:bb>',aaa,'main')
 route.add_route('/page/<path:file>',aaa)
+route.add_route('/',bbb)
 route.add_route('/index/<int:a>',aaa)

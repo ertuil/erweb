@@ -30,12 +30,19 @@ class BaseResponse():
 
     def del_cookies(self,name):
         self.set_cookies(name,' ',max_age=-1)
+
+class RawResponse(BaseResponse):
+    def __init__(self,path):
+        super(RawResponse,self).__init__()
+        self.headers = [('Content-type', 'text/html')]
+        self.body.append(bytes(path,'utf-8'))
     
 class HTTPResponse(BaseResponse):
-    def __init__(self,info):
+    def __init__(self,path):
         super(HTTPResponse,self).__init__()
         self.headers = [('Content-type', 'text/html')]
-        self.body.append(info.encode())
+        with open(path,'rb') as f:
+            self.body.append(f.read())
 
 class ErrorResponse(BaseResponse):
     def __init__(self,status,info):
@@ -43,3 +50,4 @@ class ErrorResponse(BaseResponse):
         self.status = status
         self.headers = [('Content-type', 'text/html')]
         self.body.append(info.encode())
+
