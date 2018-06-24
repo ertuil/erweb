@@ -1,7 +1,10 @@
 import re
 import importlib
 
+
 from .__init__ import __version__
+import erconfig as default_config
+
 
 ###############################################################################
 ####### EXPECTION #############################################################
