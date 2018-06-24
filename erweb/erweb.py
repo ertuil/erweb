@@ -46,5 +46,6 @@ class Erweb():
 
     def set_config(self,cfg):
         self.config.load(cfg)
+
             
 defaultapp = Erweb()

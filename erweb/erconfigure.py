@@ -31,3 +31,8 @@ class Configure(dict):
         config_list = ["URLs","salt"]
         for tt in config_list:
             self._get_settings(tt)
+    
+    def reload(self,cfg = None):
+        self.__dict__ = {}
+        if cfg:
+            self.load(cfg)

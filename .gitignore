@@ -2,4 +2,7 @@
 *.so
 *.egg
 *.egg-info
+__pycache__/*
+erweb/__pycache__/*
+test/__pycache__/*
 .vscode
