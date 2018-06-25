@@ -4,10 +4,8 @@ sys.path.append('../')
 
 from erweb import defaultapp
 from erweb.response import HTTPResponse
-import test_config as cfg
 
 
-defaultapp.set_config(cfg)
 route = defaultapp.router
 
 

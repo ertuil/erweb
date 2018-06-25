@@ -1,4 +1,5 @@
 import re
+from erweb import erweb_config as app_config
 from erweb.expections import RoutePathIllegalException,RouteAddfailedException,HTTPException
 from erweb.response import ErrorResponse
 
@@ -12,8 +13,7 @@ from erweb.response import ErrorResponse
 # <int:num>,<str:name>,<path:filename>,<re:[a-z]:str1> ... 
 
 class Route():
-    def __init__(self,config):
-        self.config = config
+    def __init__(self):
         self._route = {}
         self._post_route = {}
         self._get_route = {}

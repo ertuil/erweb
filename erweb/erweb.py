@@ -4,11 +4,10 @@ import base64
 import hashlib
 import traceback
 
-
+from erweb import erweb_config as app_config
 from erweb.encrypt import en_xor_str
 from erweb.__init__ import __version__
 from erweb.request import Request
-from erweb.config import Configure
 from erweb.expections import HTTPException
 from erweb.router import Route
 from erweb.response import RawResponse
@@ -20,15 +19,14 @@ from erweb.response import RawResponse
 class Erweb():
 
     def __init__(self):
-        self.config = Configure()
-        self.router = Route(self.config)
+        self.router = Route()
         self.ext = {}
 
     def __call__(self,environ,start_response):
         try:
             _env = environ
             _proc = start_response
-            req = Request(_env,self.config["salt"])
+            req = Request(_env)
             res = self.router(req)
             if isinstance(res,str):
                 res = RawResponse(res)
@@ -57,7 +55,7 @@ class Erweb():
     def trans_cookies(self,cookies,headers):
         for cookie in cookies:
             (name,value,max_age,expires,path,domain,secure,httponly) = cookie
-            _tmp = name + "=" + en_xor_str(value,self.config["salt"])
+            _tmp = name + "=" + en_xor_str(value,app_config.get("SECRET_KEY"))
             if max_age != 0:
                 _tmp += ";max_age="+str(max_age)
             elif expires != None:
@@ -70,9 +68,5 @@ class Erweb():
             if httponly:
                 _tmp += ";httponly"      
             headers.append(("Set-Cookie",_tmp))
-
-
-    def set_config(self,cfg):
-        self.config.load(cfg)
       
 defaultapp = Erweb()

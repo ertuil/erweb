@@ -3,7 +3,7 @@
 ###############################################################################
 import hashlib
 import base64
-import erweb.default_config
+from erweb import erweb_config as app_config
 
 class BaseResponse():
     def __init__(self):

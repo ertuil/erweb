@@ -1,39 +1,59 @@
-import erweb.default_config as default_config
-from erweb.__init__ import __version__
+'''
+config.py
+~~~~~~~~~~~
+
+This is the configuration manager.
+
+'''
+
+###############################################################################
+####### Default Config ########################################################
+###############################################################################
+
+default_config_dev = {
+    'DATABASE_URL'  :   './',
+    'DATABASE_USER' :   'admin',
+    'DATABASE_PASSWD':  'admin',
+    'DATABASE_PORT' :   3306,
+    'DATABASE'      :   'sqlite3',
+    'DATABASE_NAME' :   'admin',
+
+    'STATIC_URL'    :   '/static/',
+    'STATIC_ROOT'   :   './static',
+
+    'SECRET_KEY'    :   'erweb',
+
+    'SESSION_NAME'  :   'sessionid',
+    'SESSION_POS'   :   'DATABASE',     # 'MEMERY' or 'FILE'
+
+    'CHARSET'       :   'utf-8'
+}
+
 
 ###############################################################################
 ####### Configure #############################################################
 ############################################################################### 
 
-# load config from a .py file
+class config():
+    def __init__(self):
+        self._config = default_config_dev
+        self._callback = []
 
-class Configure(dict):
-    def __init__(self, *args, **kwargs):
-        super(Configure, self).__init__(*args, **kwargs)
-        self.__dict__ = self
-        self._default_config = default_config
-    
-    def load(self,mod):
+    def upload(self,dicts):
+        for k,v in dicts.items():
+            self._config[k] = v
+        for func in self._callback:
+            func()
+        
+    def get(self,key,default = None):
         try:
-            self.mod = mod
-        except :
-            self.mod = self._default_config
-        self._load_config()
-
-    def _get_settings(self,key):
-        try:
-            self[key] = getattr(self.mod,key)
-        except AttributeError:
-            self[key] = getattr(self._default_config,key)
-
-    def _load_config(self):
-        self["version"] = __version__
-        config_list = ["URLs","salt","db_url","use_interal_db"]
-        for tt in config_list:
-            self._get_settings(tt)
+            return self._config[key]
+        except KeyError:
+            return default
     
-    def reload(self,cfg = None):
-        self.__dict__ = {}
-        if cfg:
-            self.load(cfg)
-    
+    def add_callback(self,func):
+        if hasattr(func,'__call__'):
+            self._callback.append(func)
+
+default_config = config()
+
