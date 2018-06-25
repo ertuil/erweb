@@ -3,7 +3,7 @@ sys.path.append('../')
 
 
 from erweb import defaultapp
-from erweb.erresponse import HTTPResponse
+from erweb.response import HTTPResponse
 import test_config as cfg
 
 

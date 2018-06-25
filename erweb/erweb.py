@@ -7,11 +7,11 @@ import traceback
 
 from erweb.encrypt import en_xor_str
 from erweb.__init__ import __version__
-from erweb.errequest import Request
-from erweb.erconfigure import Configure
-from erweb.erexpection import HTTPException
-from erweb.erroute import Route
-from erweb.erresponse import RawResponse
+from erweb.request import Request
+from erweb.config import Configure
+from erweb.expections import HTTPException
+from erweb.router import Route
+from erweb.response import RawResponse
 
 ###############################################################################
 ####### APP ###################################################################

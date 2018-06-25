@@ -2,7 +2,9 @@
 utils.py
 ~~~~~~~~~~~
 
-This is the encript
+This is the encript tools used to encrypt cookies for safety.
+Xor calculates between value and key and then transforms it in into Hexadecimal.
+
 '''
 
 import base64
