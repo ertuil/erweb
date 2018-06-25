@@ -20,7 +20,6 @@ class Erweb():
 
     def __init__(self):
         self.router = Route()
-        self.ext = {}
 
     def __call__(self,environ,start_response):
         try:

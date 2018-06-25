@@ -1,3 +1,10 @@
+'''
+request.py
+~~~~~~~~~~~
+
+Read information from the environ of WSGI and convert it.
+
+'''
 import re
 import base64
 
@@ -7,8 +14,6 @@ from erweb.encrypt import de_xor_str
 ###############################################################################
 ####### Request ###############################################################
 ###############################################################################
-
-# Read information from the environ of WSGI and convert it.
 
 class Request():
 
