@@ -23,6 +23,7 @@ class Erweb():
     def __init__(self):
         self.config = Configure()
         self.router = Route(self.config)
+        self.ext = {}
 
     def __call__(self,environ,start_response):
         try:
@@ -75,6 +76,6 @@ class Erweb():
     def set_config(self,cfg):
         self.config.load(cfg)
         if self.config["use_interal_db"]:
-            self.database = jardb(self.config["db_url"])
+            self.ext["database"] = jardb(self.config["db_url"])
       
 defaultapp = Erweb()
