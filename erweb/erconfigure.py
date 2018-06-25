@@ -36,6 +36,5 @@ class Configure(dict):
         self.__dict__ = {}
         if cfg:
             self.load(cfg)
-        
     
     

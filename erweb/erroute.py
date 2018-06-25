@@ -12,7 +12,8 @@ from erweb.erresponse import ErrorResponse
 # <int:num>,<str:name>,<path:filename>,<re:[a-z]:str1> ... 
 
 class Route():
-    def __init__(self):
+    def __init__(self,config):
+        self.config = config
         self._route = {}
         self._post_route = {}
         self._get_route = {}
@@ -74,9 +75,6 @@ class Route():
 
         for _ii in _tmp_route.values():
             _rule = _ii[1]
-
-            print(_rule)
-            print(_url)
             _url_len = len(_url)
             _rule_len = len(_rule)
 

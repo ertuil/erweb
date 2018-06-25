@@ -30,7 +30,9 @@ def aaa(req,var):
     return a
 
 def bbb(req,var):
-    return HTTPResponse("index.html")
+    res = HTTPResponse("index.html")
+    res.set_cookies('name','ertuil')
+    return res
 
 route.add_route('/index.html/<int:a>/<str:name>/<re:[a-c][1-9]:bb>',aaa,'main')
 route.add_route('/page/<path:file>',aaa)

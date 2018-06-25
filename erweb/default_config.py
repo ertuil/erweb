@@ -4,7 +4,7 @@ URLs = []
 
 # salt for secure 
 # Not support yet
-salt = 'erweb'
+salt = 'erweb123123'
 
 # interal database url
 db_url = "json://database.db"
@@ -12,6 +12,3 @@ db_url = "json://database.db"
 use_interal_db = False
 
 # static file urls
-
-
-
