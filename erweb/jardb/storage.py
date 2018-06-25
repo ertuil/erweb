@@ -28,13 +28,9 @@ class JsonStorage(BaseStorage):
     def write(self,database,filepath = None):
         if not filepath:
             filepath = database.file_path
-        with open(filepath+'.swp','w') as f:
+        with open(filepath,'w') as f:
             json.dump(database.encode(),f)
-        if os.path.exists(filepath+'.bac'):
-            os.remove(filepath+'.bac')
-        if os.path.exists(filepath):
-            os.rename(filepath,filepath+'.bac')
-        os.rename(filepath+'.swp',filepath)
+
 
 class BinStorage(BaseStorage):
     '''Pickle binary Storage'''
@@ -47,13 +43,8 @@ class BinStorage(BaseStorage):
     def write(self,database,filepath = None):
         if not filepath:
             filepath = database.file_path
-        with open(filepath+'.swp','wb') as f:
+        with open(filepath,'wb') as f:
             pickle.dump(database.encode(),f)
-        if os.path.exists(filepath+'.bac'):
-            os.remove(filepath+'.bac')
-        if os.path.exists(filepath):
-            os.rename(filepath,filepath+'.bac')
-        os.rename(filepath+'.swp',filepath)
 
 
 class MemeryStorage(BaseStorage):

@@ -34,5 +34,5 @@ def bbb(req,var):
 
 route.add_route('/index.html/<int:a>/<str:name>/<re:[a-c][1-9]:bb>',aaa,'main')
 route.add_route('/page/<path:file>',aaa)
+route.add_route('/index/<int:a>/',aaa)
 route.add_route('/',bbb)
-route.add_route('/index/<int:a>',aaa)

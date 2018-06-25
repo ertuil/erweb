@@ -42,6 +42,7 @@ class jardb(object):
         dblog.set_log(log)
         self._autosave = autosave
         self._query_list = {}
+        
         atexit.register(self.close)
 
         path = filepath.split('://')

@@ -74,10 +74,26 @@ class Route():
 
         for _ii in _tmp_route.values():
             _rule = _ii[1]
-            if len(_rule) > len(_url):
+
+            print(_rule)
+            print(_url)
+            _url_len = len(_url)
+            _rule_len = len(_rule)
+
+            if _rule_len == 0:
+                if  _url_len == 0:
+                    return _ii[0](env,[])
+                else:
+                    continue                
+
+            if _rule_len >  _url_len:
                 continue
+
+            if _rule_len < _url_len and _rule_len > 0 and _rule[-1][0] != 'path':
+                continue
+
             _flag = True
-            for jj in range(len(_rule)):
+            for jj in range(_rule_len):
                 if _rule[jj][0] == 'static' and _rule[jj][1] == _url[jj]:
                     continue
                 elif _rule[jj][0] == 'static' and _rule[jj][1] != _url[jj]:
