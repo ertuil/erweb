@@ -11,12 +11,13 @@ This is the configuration manager.
 ###############################################################################
 
 default_config_dev = {
-    'DATABASE_URL'  :   './',
+    'DATABASE_URL'  :   'localhost',
+    'DATABASE_ROOT'  :   './',
     'DATABASE_USER' :   'admin',
     'DATABASE_PASSWD':  'admin',
     'DATABASE_PORT' :   3306,
-    'DATABASE'      :   'sqlite3',
-    'DATABASE_NAME' :   'admin',
+    'DATABASE'      :   'sqlite3',  # sqlite3 or mysql or memery
+    'DATABASE_NAME' :   'database.db',    #
 
     'STATIC_URL'    :   '/static/',
     'STATIC_ROOT'   :   './static',
@@ -37,12 +38,12 @@ default_config_dev = {
 class config():
     def __init__(self):
         self._config = default_config_dev
-        self._callback = []
+        self._callback = {}
 
     def upload(self,dicts):
         for k,v in dicts.items():
             self._config[k] = v
-        for func in self._callback:
+        for func in self._callback.values():
             func()
         
     def get(self,key,default = None):
@@ -52,8 +53,8 @@ class config():
             return default
     
     def add_callback(self,func):
-        if hasattr(func,'__call__'):
-            self._callback.append(func)
+        if hasattr(func,'__call__') and func.__name__ not in self._callback.keys():
+            self._callback[func.__name__] = func
 
 default_config = config()
 

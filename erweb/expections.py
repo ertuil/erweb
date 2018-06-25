@@ -19,3 +19,6 @@ class HTTPException(ErwebBaseException):
     def __init__(self,err='500 Oops!',status = 500):
         Exception.__init__(self,err)
         self.status = status
+
+class DatabaseTypeNotSupportError(Exception):
+    pass
