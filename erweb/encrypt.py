@@ -1,3 +1,10 @@
+'''
+utils.py
+~~~~~~~~~~~
+
+This is the encript
+'''
+
 import base64
 
 def en_xor_str(value,key,enc = 'utf-8'):

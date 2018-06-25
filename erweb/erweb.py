@@ -5,14 +5,13 @@ import hashlib
 import traceback
 
 
-from erweb.utils import en_xor_str
+from erweb.encrypt import en_xor_str
 from erweb.__init__ import __version__
 from erweb.errequest import Request
 from erweb.erconfigure import Configure
 from erweb.erexpection import HTTPException
 from erweb.erroute import Route
 from erweb.erresponse import RawResponse
-from erweb.jardb import jardb
 
 ###############################################################################
 ####### APP ###################################################################
@@ -75,7 +74,5 @@ class Erweb():
 
     def set_config(self,cfg):
         self.config.load(cfg)
-        if self.config["use_interal_db"]:
-            self.ext["database"] = jardb(self.config["db_url"])
       
 defaultapp = Erweb()

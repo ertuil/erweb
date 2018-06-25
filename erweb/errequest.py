@@ -1,7 +1,7 @@
 import re
 import base64
 
-from erweb.utils import de_xor_str
+from erweb.encrypt import de_xor_str
 
 ###############################################################################
 ####### Request ###############################################################
