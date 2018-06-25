@@ -1,13 +1,11 @@
 import base64
 
-def en_xor_str(value,key):
-    b1 = value.encode('utf-8')
-    b2 = key.encode('utf-8')
+def en_xor_str(value,key,enc = 'utf-8'):
+    b1 = value.encode(enc)
+    b2 = key.encode(enc)
     _b2_len = len(b2)
-
     num = 0
     result = []
-
     for ii in b1:
         if num >= _b2_len:
             num = 0
@@ -22,23 +20,20 @@ def en_xor_str(value,key):
     return _str
 
 
-def de_xor_str(value,key):
+def de_xor_str(value,key,enc = 'utf-8'):
     b1 = []
     ii = 0
     while ii < len(value):
         _char = value[ii:ii+2]
         b1.append(int(_char,16))
         ii += 2
-
-    b2 = key.encode('utf-8')
+    b2 = key.encode(enc)
     _b2_len = len(b2)
     num = 0
     result = []
-
     for ii in b1:
         if num >= _b2_len:
             num = 0
         result.append(ii ^ b2[num])
         num += 1
     return bytes(result).decode()
-    
