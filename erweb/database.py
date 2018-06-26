@@ -145,7 +145,7 @@ class database():
         sql += " FROM "+tablename
         if limit:
             sql += " WHERE " + limit
-        print(sql)
+
         self.execute(sql)
         return self.get_all()
     
@@ -158,7 +158,6 @@ class database():
         sql = "UPDATE "+tablename+" SET "+sent
         if limit:
             sql += " WHERE "+limit
-        print(sql)
         self.execute(sql)
         return self.get_all()
     
@@ -170,7 +169,6 @@ class database():
         sql ="DELETE FROM "+tablename
         if limit:
             sql += " WHERE " + limit
-        print(sql)
         self.execute(sql)
         return self.get_all()
 

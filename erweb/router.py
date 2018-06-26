@@ -70,7 +70,7 @@ class Route():
 
 
     def __call__(self,env):
-        url = env.URL
+        url = re.sub("\\?.*$","",env.URL)
         _url = [x for x in re.split("/",url.strip()) if x != '']
         _var = {}
         if env.METHOD == 'GET':
@@ -164,8 +164,6 @@ def http_500_handle(env,var = None):
 def static_handle(env,var = None):
     try:
         path = var['filename']
-        print(123)
-        print(path)
         return STATICResponse(path)
 
     except:
