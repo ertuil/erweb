@@ -30,7 +30,6 @@ class Session():
             self._record = self.db.select("ERWEB_SESSION",["*"],"SESSION_ID = "+str(self.session_id))[0]
             self._dicts = json.loads(self._record[1])
             self._expire = self._record[2]
-            print(self._dicts)
 
         except:
             raise GetSessionException
