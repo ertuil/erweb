@@ -24,8 +24,9 @@ default_config_dev = {
 
     'SECRET_KEY'    :   'erweb',
 
-    'SESSION_NAME'  :   'sessionid',
+    'SESSION_NAME'  :   'session',
     'SESSION_POS'   :   'DATABASE',     # 'MEMERY' or 'FILE'
+    'SESSION_AGE'   :   3600,
 
     'CHARSET'       :   'utf-8'
 }

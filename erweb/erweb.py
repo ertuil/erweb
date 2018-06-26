@@ -11,6 +11,7 @@ from erweb.request import Request
 from erweb.expections import HTTPException
 from erweb.router import Route
 from erweb.response import RawResponse
+from erweb.cookie import set_cookies
 
 ###############################################################################
 ####### APP ###################################################################
@@ -29,13 +30,13 @@ class Erweb():
             res = self.router(req)
             if isinstance(res,str):
                 res = RawResponse(res)
-            ret = self.set_response(_proc,res)
+            ret = self.set_response(_proc,res,req)
             return ret
         except HTTPException as e:
             print(str(e))
             traceback.print_exc()
             res = self.router.handle_error(e.status,_env)
-            ret = self.set_response(_proc,res)
+            ret = self.set_response(_proc,res,req)
             return ret
         except Exception as e:
             print(str(e))
@@ -43,11 +44,11 @@ class Erweb():
             res = self.router.handle_error(500,_env)
             if isinstance(res,str):
                 res = RawResponse(res)
-            ret = self.set_response(_proc,res)
+            ret = self.set_response(_proc,res,req)
             return ret
     
-    def set_response(self,_proc,res):
-        self.trans_cookies(res.cookies,res.headers)
+    def set_response(self,_proc,res,req):
+        set_cookies(req.SESSION_ID,res)
         _proc(res.status,res.headers)
         return res.body
 

@@ -9,6 +9,7 @@ import re
 import base64
 
 from erweb import erweb_config as app_config
+from erweb.cookie import get_cookies
 from erweb.encrypt import de_xor_str
 
 ###############################################################################
@@ -34,9 +35,8 @@ class Request():
 
         tmp = re.split("[;=]",env.get('HTTP_COOKIE',"").strip())
         self._COOKIES = dict(zip(tmp[::2],tmp[1::2]))
-        self.COOKIES = {}
-        for k,v in self._COOKIES.items():
-            self.COOKIES[k] = de_xor_str(v,self.salt)
+        self.COOKIES = get_cookies(self._COOKIES)
+        
         try:
             self.SESSION_ID = int(self.COOKIES["session_id"] or -1)
         except :

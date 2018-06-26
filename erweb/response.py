@@ -12,7 +12,7 @@ class BaseResponse():
         self.headers = [('Content-type', 'text/plain')]
         self.body = []
 
-    def set_cookies(self,name,value,max_age = 0,expires = None,path='/',domain=None,secure=False,httponly=False):
+    def set_cookies(self,name,value,max_age = 300,expires = None,path='/',domain=None,secure=False,httponly=False):
         _tmp = (name,value,max_age,expires,path,domain,secure,httponly)
         self.cookies.append(_tmp)
 

@@ -22,3 +22,6 @@ class HTTPException(ErwebBaseException):
 
 class DatabaseTypeNotSupportError(Exception):
     pass
+
+class CookieTooLargeException(Exception):
+    pass
