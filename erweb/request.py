@@ -7,6 +7,8 @@ Read information from the environ of WSGI and convert it.
 '''
 import re
 import base64
+from cgi import FieldStorage
+import traceback
 
 from erweb import erweb_config as app_config
 from erweb.cookie import get_cookies
@@ -20,8 +22,10 @@ from erweb.session import Session
 class Request():
 
     def __init__(self,env):
+        self._env = env
+        self.POST = {}
+        self.FILE = {}
 
-        self.salt = app_config.get("SECRET_KEY")
         self.METHOD = env.get('REQUEST_METHOD',"")
         self.SERVER_PROTOCOL = env.get('SERVER_PROTOCOL',"")
         self.ACCEPT = env.get('HTTP_ACCEPT',"")
@@ -54,8 +58,12 @@ class Request():
         except (ValueError):
             _request_body_size = 0
         try:
-            tmp = str(env.get('wsgi.input',None).read(_request_body_size))
-            tmp = re.split("[&=]",tmp[2:-1].strip()) or []
-            self.POST = dict(zip(tmp[::2],tmp[1::2]))
-        except :
+            self._POST = FieldStorage(fp=self._env.get("wsgi.input"), environ=self._env, keep_blank_values=True)
+            for k in self._POST.keys():
+                if k in self._POST and self._POST[k].filename:
+                    self.FILE[k] = (self._POST[k].filename,self._POST.getvalue(k))
+                else:
+                    self.POST[k] = self._POST.getvalue(k)
+        except Exception:
+            traceback.print_exc()
             self.POST = {}
