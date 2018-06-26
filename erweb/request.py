@@ -25,16 +25,7 @@ class Request():
         self._env = env
         self.POST = {}
         self.FILE = {}
-
-        self.METHOD = env.get('REQUEST_METHOD',"")
-        self.SERVER_PROTOCOL = env.get('SERVER_PROTOCOL',"")
-        self.ACCEPT = env.get('HTTP_ACCEPT',"")
-        self.ACCEPT_ENCODING = env.get('HTTP_ACCEPT_ENCODING',"")
-        self.ACCEPT_LANGUAGE = env.get('HTTP_ACCEPT_LANGUAGE',"")
-        self.USER_AGENT = env.get('HTTP_USER_AGENT','')
-        self.URL = env.get('RAW_URI',"")
-        self.REMOTE_IP = str(env.get('REMOTE_ADDR',""))+':'+str(env.get('REMOTE_PORT',""))
-
+        
         tmp = re.split("[&=]",env.get('QUERY_STRING','').strip()) or []
         self.GET = dict(zip(tmp[::2],tmp[1::2]))
 
@@ -67,3 +58,38 @@ class Request():
         except Exception:
             traceback.print_exc()
             self.POST = {}
+
+    @property
+    def METHOD(self):
+        return self._env.get('REQUEST_METHOD',"")
+    
+    @property
+    def SERVER_PROTOCOL(self):
+        return self._env.get('SERVER_PROTOCOL',"")
+    
+    @property
+    def ACCEPT(self):
+        return self._env.get('HTTP_ACCEPT',"")
+
+    @property
+    def ACCEPT_ENCODING(self):
+        return self._env.get('HTTP_ACCEPT_ENCODING',"")
+
+    @property
+    def ACCEPT_LANGUAGE(self):
+        return self._env.get('HTTP_ACCEPT_LANGUAGE',"")
+
+    @property
+    def USER_AGENT(self):
+        return self._env.get('HTTP_USER_AGENT','')
+    
+    @property
+    def URL(self):
+        return re.sub("\\?.*$","",self._env.get('RAW_URI',""))
+    
+    @property
+    def REMOTE_IP(self):
+        return str(self._env.get('REMOTE_ADDR',""))+':'+str(self._env.get('REMOTE_PORT',""))
+
+    
+

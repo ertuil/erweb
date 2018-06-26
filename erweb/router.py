@@ -70,7 +70,7 @@ class Route():
 
 
     def __call__(self,env):
-        url = re.sub("\\?.*$","",env.URL)
+        url = env.URL
         _url = [x for x in re.split("/",url.strip()) if x != '']
         _var = {}
         if env.METHOD == 'GET':
