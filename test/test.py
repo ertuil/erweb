@@ -20,6 +20,10 @@ def aaa(req,var):
 
 def bbb(req,var):
     res = HTTPResponse("index.html")
+    a = req.session['123']
+    print(a)
+    req.session['123'] = a+1
+    req.session['hello'] = 'world'
     res.set_cookies('name','ertuilertuilertuil')
     return res
 

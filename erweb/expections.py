@@ -25,3 +25,6 @@ class DatabaseTypeNotSupportError(Exception):
 
 class CookieTooLargeException(Exception):
     pass
+
+class GetSessionException(Exception):
+    pass

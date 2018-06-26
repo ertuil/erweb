@@ -11,6 +11,7 @@ import base64
 from erweb import erweb_config as app_config
 from erweb.cookie import get_cookies
 from erweb.encrypt import de_xor_str
+from erweb.session import Session
 
 ###############################################################################
 ####### Request ###############################################################
@@ -33,14 +34,20 @@ class Request():
         tmp = re.split("[&=]",env.get('QUERY_STRING','').strip()) or []
         self.GET = dict(zip(tmp[::2],tmp[1::2]))
 
-        tmp = re.split("[;=]",env.get('HTTP_COOKIE',"").strip())
+        tmp = re.split("[;=]",env.get('HTTP_COOKIE',"").replace(" ",""))
         self._COOKIES = dict(zip(tmp[::2],tmp[1::2]))
         self.COOKIES = get_cookies(self._COOKIES)
         
         try:
-            self.SESSION_ID = int(self.COOKIES["session_id"] or -1)
+            self.SESSION_ID = int(self.COOKIES["session_id"])
         except :
-            self.SESSION_ID = -1
+            print('new session id')
+            self.SESSION_ID = 0
+        
+        self.session = Session(self.SESSION_ID)
+
+        if self.SESSION_ID == 0:
+            self.SESSION_ID = - self.session.session_id
 
         try:
             _request_body_size = int(env.get('CONTENT_LENGTH',"") or 0)
