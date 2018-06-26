@@ -50,7 +50,10 @@ class Erweb():
     def set_response(self,_proc,res,req):
         set_cookies(req.SESSION_ID,res)
         _proc(res.status,res.headers)
-        return res.body
+        if req.METHOD == "HEAD":
+            return []
+        else:
+            return res.body
 
     def trans_cookies(self,cookies,headers):
         for cookie in cookies:
