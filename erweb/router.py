@@ -1,7 +1,8 @@
 import re
+import os.path
 from erweb import erweb_config as app_config
 from erweb.expections import RoutePathIllegalException,RouteAddfailedException,HTTPException
-from erweb.response import ErrorResponse
+from erweb.response import ErrorResponse,STATICResponse
 
 ###############################################################################
 ####### Route #################################################################
@@ -21,6 +22,8 @@ class Route():
         self._error_route[404] = http_404_handle
         self._error_route[403] = http_403_handle
         self._error_route[500] = http_500_handle
+        self.add_static_route()
+        app_config.add_callback(self.add_static_route)
         
     def _parse(self,url):
         _ans = []
@@ -34,6 +37,10 @@ class Route():
             else:
                 _ans.append(('static',_ii))
         return _ans
+
+    def add_static_route(self):
+        url = os.path.join(app_config.get('STATIC_URL'),"<path:filename>")
+        self._route["ERWEB_STATIC"] = (static_handle,self._parse(url))
 
     def add_route(self,url,func,name = None,method = None):
         if not hasattr(func, '__call__') :
@@ -150,3 +157,16 @@ def http_500_handle(env,var = None):
     """
     return ErrorResponse("500 Server Error",_info)
 
+###############################################################################
+####### STATIC_HANDLES ########################################################
+###############################################################################
+
+def static_handle(env,var = None):
+    try:
+        path = var['filename']
+        print(123)
+        print(path)
+        return STATICResponse(path)
+
+    except:
+        raise HTTPException('404 NOT FOUND',404)

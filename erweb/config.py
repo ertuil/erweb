@@ -12,7 +12,7 @@ This is the configuration manager.
 
 default_config_dev = {
     'DATABASE_URL'  :   'localhost',
-    'DATABASE_ROOT'  :   './',
+    'DATABASE_ROOT' :   './',
     'DATABASE_USER' :   'admin',
     'DATABASE_PASSWD':  'admin',
     'DATABASE_PORT' :   3306,
@@ -21,6 +21,7 @@ default_config_dev = {
 
     'STATIC_URL'    :   '/static/',
     'STATIC_ROOT'   :   './static',
+    'HTML_ROOT'     :   './static/html',
 
     'SECRET_KEY'    :   'erweb',
 
@@ -29,7 +30,6 @@ default_config_dev = {
 
     'CHARSET'       :   'utf-8'
 }
-
 
 ###############################################################################
 ####### Configure #############################################################
