@@ -81,7 +81,6 @@ file_type = {
     ".jpe"	:   "image/jpeg",
     ".jpeg"	:   "image/jpeg",
     ".jpg"	:   "image/jpeg",
-    ".jpe"	:   "image/jpeg",
     ".gif"	:   "image/gif",
     ".ico"	:   "image/x-icon",
 
