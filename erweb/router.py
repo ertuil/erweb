@@ -3,6 +3,7 @@ import os.path
 from erweb import erweb_config as app_config
 from erweb.expections import RoutePathIllegalException,RouteAddfailedException,HTTPException
 from erweb.response import ErrorResponse,STATICResponse
+from erweb.response_type import response_type
 
 ###############################################################################
 ####### Route #################################################################
@@ -19,9 +20,9 @@ class Route():
         self._post_route = {}
         self._get_route = {}
         self._error_route = {}
-        self._error_route[404] = http_404_handle
-        self._error_route[403] = http_403_handle
-        self._error_route[500] = http_500_handle
+        self._error_route[404] = http_error_handle
+        self._error_route[403] = http_error_handle
+        self._error_route[500] = http_error_handle
         self.add_static_route()
         app_config.add_callback(self.add_static_route)
         
@@ -65,8 +66,8 @@ class Route():
         else:
             self._route.pop(name)
 
-    def handle_error(self,status,env):
-        return self._error_route[status](env)
+    def handle_error(self,status,req,error_info = None):
+        return self._error_route[status](req,status,error_info)
 
 
     def __call__(self,env):
@@ -134,6 +135,35 @@ class Route():
 ###############################################################################
 
 # This is the default handle for HTTP ERRORS
+
+def http_error_handle(req,status,error_info):
+    head = """
+        <html>
+            <head>
+                <title> ERROR </title>
+            </head>
+            <body>
+    """
+    html = "<div><h1> ERROR!" + str(response_type[status])+"!</h1></div>"
+    html += "<div><p>Method: "+req.METHOD+" </p>"
+    html += "<p>URL: "+req.URL+" </p></div>"
+
+    if app_config.get("DEBUG") == True:
+        html += " <div><h1> DEBUG MODE :</h1></div>"
+        html += "<hr> <div><h3> REQUEST :</h3>"
+        html += "<p> GET :"+str(req.GET)+"</p>"
+        html += "<p> POST :"+str(req.POST)+"</p>"
+        html += "<p> COOKIE :"+str(req.COOKIES)+"</p></div>"
+        html += "<hr><div><h3>ERROR INFORMATION:</h3>"
+        html += "<pre>"+error_info+"</pre></div><hr>"
+        html += "<div><h3>Please notice! You can see these information because DEBUG = TRUE. </h3></div>"
+    
+    html += "<div><h3>The server is powered by erweb</h3></div> </body></html>"
+    html = head + html
+    return ErrorResponse(html,type = status)
+
+
+        
 
 def http_404_handle(env,var = None):
     _info = """

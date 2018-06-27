@@ -2,7 +2,7 @@
 ###############################################################################
 ####### EXPECTION #############################################################
 ###############################################################################
-from erweb.response import response_type
+from erweb.response_type import response_type
 
 class ErwebBaseException(Exception):
     def __init__(self,err="Erweb is Crashed!"):
@@ -12,11 +12,11 @@ class RoutePathIllegalException(ErwebBaseException):
     def __init__(self,err="Route Error!"):
         Exception.__init__(self,err)
 
-class RouteAddfailedException(Exception):
+class RouteAddfailedException(ErwebBaseException):
     def __init__(self,err="Insert Route URL Failed!"):
         Exception.__init__(self,err)
 
-class PageNotFonudError(Exception):
+class PageNotFonudError(ErwebBaseException):
     def __init__(self,err="Page Not Found"):
         Exception.__init__(self,err)
 
@@ -26,14 +26,14 @@ class HTTPException(ErwebBaseException):
         Exception.__init__(self,err)
         self.status = status
 
-class DatabaseTypeNotSupportError(Exception):
+class DatabaseTypeNotSupportError(ErwebBaseException):
     def __init__(self,err="Database is not support!"):
         Exception.__init__(self,err)
 
-class CookieTooLargeException(Exception):
+class CookieTooLargeException(ErwebBaseException):
     def __init__(self,err="Cookie is too large"):
         Exception.__init__(self,err)
 
-class GetSessionException(Exception):
+class GetSessionException(ErwebBaseException):
     def __init__(self,err="Session error"):
         Exception.__init__(self,err)

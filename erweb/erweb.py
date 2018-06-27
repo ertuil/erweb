@@ -33,15 +33,18 @@ class Erweb():
             ret = self.set_response(_proc,res,req)
             return ret
         except HTTPException as e:
-            print(str(e))
-            traceback.print_exc()
-            res = self.router.handle_error(e.status,_env)
+            _error_info = str(e)+"\n"
+            _error_info += traceback.format_exc()
+            print(_error_info)
+            res = self.router.handle_error(e.status,req,_error_info)
             ret = self.set_response(_proc,res,req)
             return ret
         except Exception as e:
-            print(str(e))
-            traceback.print_exc()
-            res = self.router.handle_error(500,_env)
+            _error_info = str(e)
+            _error_info += traceback.format_exc()
+            print(_error_info)
+            res = self.router.handle_error(500,req,_error_info)
+
             if isinstance(res,str):
                 res = RawResponse(res)
             ret = self.set_response(_proc,res,req)

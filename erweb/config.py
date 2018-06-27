@@ -28,7 +28,8 @@ default_config_dev = {
     'SESSION_NAME'  :   'session',
     'SESSION_AGE'   :   1209600,
 
-    'CHARSET'       :   'utf-8'
+    'CHARSET'       :   'utf-8',
+    'DEBUG'         :   True
 }
 
 ###############################################################################
