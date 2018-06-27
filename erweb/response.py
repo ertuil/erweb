@@ -4,6 +4,7 @@
 import hashlib
 import base64
 import os.path
+from erweb.expections import HTTPException
 from erweb import erweb_config as app_config
 
 class BaseResponse():
@@ -42,9 +43,21 @@ class STATICResponse(BaseResponse):
         if pax in file_type.keys():
             self.headers = [('Content-type', file_type[pax])]
         else:
-            self.headers = [('Content-type', 'text/html')]
+            self.headers = [('Content-type', 'application/octet-stream')]
         with open(path,'rb') as f:
             self.body.append(f.read())
+        
+class FILEResponse(BaseResponse):
+    def __init__(self,path):
+        super(FILEResponse,self).__init__()
+        filename = os.path.split(path)
+        print(filename)
+        self.headers = [('Content-type', 'application/octet-stream'),("Content-disposition","attachment;filename="+filename[1])]
+        try:
+            with open(path,'rb') as f:
+                self.body.append(f.read())
+        except :
+            raise HTTPException('404 NOT FOUND',404)
 
 class ErrorResponse(BaseResponse):
     def __init__(self,status,info,enc = 'utf-8'):

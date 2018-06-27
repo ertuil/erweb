@@ -7,3 +7,5 @@ __pycache__/
 ./test/__pycache__/
 ./erweb/jardb/__pycache__/
 .vscode
+./test/static/1.pdf
+./test/database.db

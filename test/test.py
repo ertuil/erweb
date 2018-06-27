@@ -3,7 +3,7 @@ sys.path.append('../')
 
 
 from erweb import defaultapp
-from erweb.response import HTTPResponse
+from erweb.response import HTTPResponse,FILEResponse
 
 
 route = defaultapp.router
@@ -30,10 +30,20 @@ def bbb(req,var):
 
 def test_upload(req,var):
     res = HTTPResponse("upload.html")
+    file = req.FILE
+    print(file)
+    if file :
+        with open(file['file1'][0],"wb") as f:
+            f.write(file['file1'][1])
     return res
+
+def test_download(req,var):
+    req = FILEResponse("./11.png")
+    return req
 
 route.add_route('/upload',test_upload)
 route.add_route('/index.html/<int:a>/<str:name>/<re:[a-c][1-9]:bb>',aaa,'main')
 route.add_route('/page/<path:file>',aaa)
 route.add_route('/index/<int:a>/',aaa)
 route.add_route('/',bbb)
+route.add_route('/download',test_download)
