@@ -60,7 +60,7 @@ class FILEResponse(BaseResponse):
             with open(path,'rb') as f:
                 self.body.append(f.read())
         except :
-            raise HTTPException('404 NOT FOUND',404)
+            raise HTTPException(404)
 
 class RedirectionResponse(BaseResponse):
     def __init__(self,url,type = 301):

@@ -127,7 +127,7 @@ class Route():
                     break
             if _flag == True:
                 return _ii[0](env,_var)
-        raise HTTPException('404 Not Found',404)
+        raise HTTPException(404)
 
 ###############################################################################
 ####### Error Handles #########################################################
@@ -167,4 +167,4 @@ def static_handle(env,var = None):
         return STATICResponse(path)
 
     except:
-        raise HTTPException('404 NOT FOUND',404)
+        raise HTTPException(404)
