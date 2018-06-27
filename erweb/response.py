@@ -55,7 +55,6 @@ class FILEResponse(BaseResponse):
         super(FILEResponse,self).__init__()
         filename = os.path.split(path)
         self.status = response_type[type]
-        print(filename)
         self.headers = [('Content-type', 'application/octet-stream'),("Content-disposition","attachment;filename="+filename[1])]
         try:
             with open(path,'rb') as f:

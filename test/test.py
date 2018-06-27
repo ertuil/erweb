@@ -31,7 +31,6 @@ def bbb(req,var):
 def test_upload(req,var):
     res = HTTPResponse("upload.html")
     file = req.FILE
-    print(file)
     if file :
         with open(file['file1'][0],"wb") as f:
             f.write(file['file1'][1])

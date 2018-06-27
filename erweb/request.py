@@ -36,7 +36,6 @@ class Request():
         try:
             self.SESSION_ID = int(self.COOKIES["session_id"])
         except :
-            print('new session id')
             self.SESSION_ID = 0
         
         self.session = Session(self.SESSION_ID)
