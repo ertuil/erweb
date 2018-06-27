@@ -3,7 +3,7 @@ sys.path.append('../')
 
 
 from erweb import defaultapp
-from erweb.response import HTTPResponse,FILEResponse
+from erweb.response import HTTPResponse,FILEResponse,RedirectionResponse
 
 
 route = defaultapp.router
@@ -40,8 +40,13 @@ def test_upload(req,var):
 def test_download(req,var):
     req = FILEResponse("./11.png")
     return req
+    
+def test_redict(req,var):
+    req = RedirectionResponse("/index/111","301 Moved Permanently")
+    return req
 
 route.add_route('/upload',test_upload)
+route.add_route('/redirect',test_redict)
 route.add_route('/index.html/<int:a>/<str:name>/<re:[a-c][1-9]:bb>',aaa,'main')
 route.add_route('/page/<path:file>',aaa)
 route.add_route('/index/<int:a>/',aaa)

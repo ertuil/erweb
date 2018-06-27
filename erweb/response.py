@@ -59,6 +59,12 @@ class FILEResponse(BaseResponse):
         except :
             raise HTTPException('404 NOT FOUND',404)
 
+class RedirectionResponse(BaseResponse):
+    def __init__(self,url,type = "301 Moved Permanently"):
+        super(RedirectionResponse,self).__init__()
+        self.status = type
+        self.headers = [('Content-type', 'text/html'),("Location",url)]
+
 class ErrorResponse(BaseResponse):
     def __init__(self,status,info,enc = 'utf-8'):
         super(ErrorResponse,self).__init__()
