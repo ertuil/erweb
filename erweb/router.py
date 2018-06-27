@@ -156,7 +156,7 @@ def http_error_handle(req,status,error_info):
         html += "<p> COOKIE :"+str(req.COOKIES)+"</p></div>"
         html += "<hr><div><h3>ERROR INFORMATION:</h3>"
         html += "<pre>"+error_info+"</pre></div><hr>"
-        html += "<div><h3>Please notice! You can see these information because DEBUG = TRUE. </h3></div>"
+        html += "<div><h3>Please notice! You can see these information because DEBUG = True. </h3></div>"
     
     html += "<div><h3>The server is powered by erweb</h3></div> </body></html>"
     html = head + html
