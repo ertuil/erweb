@@ -140,14 +140,14 @@ def http_404_handle(env,var = None):
     <h1> 404 Not Found!</h1>
     <p>The server is powered by erweb</p>
     """
-    return ErrorResponse("404 Not Found",_info)
+    return ErrorResponse(_info,type = 404)
 
 def http_403_handle(env,var = None):
     _info = """
     <h1> 403 Forbidden!</h1>
     <p>The server is powered by erweb</p>
     """
-    return ErrorResponse("403 Forbidden",_info)
+    return ErrorResponse(_info,type = 403)
 
 def http_500_handle(env,var = None):
     _info = """
@@ -155,7 +155,7 @@ def http_500_handle(env,var = None):
     <p>Server crashed!</p>
     <p>The server is powered by erweb</p>
     """
-    return ErrorResponse("500 Server Error",_info)
+    return ErrorResponse(_info,type = 405)
 
 ###############################################################################
 ####### STATIC_HANDLES ########################################################
