@@ -42,7 +42,7 @@ def test_download(req,var):
     return req
     
 def test_redict(req,var):
-    req = RedirectionResponse("/index/111","301 Moved Permanently")
+    req = RedirectionResponse("/index/111",301)
     return req
 
 route.add_route('/upload',test_upload)
