@@ -37,3 +37,7 @@ class CookieTooLargeException(ErwebBaseException):
 class GetSessionException(ErwebBaseException):
     def __init__(self,err="Session error"):
         Exception.__init__(self,err)
+
+class PackageNotInstalledException(ErwebBaseException):
+    def __init__(self,err="Jinja2 is not installed."):
+        Exception.__init__(self,err)

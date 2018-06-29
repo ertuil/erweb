@@ -22,6 +22,7 @@ default_config_dev = {
     'STATIC_URL'    :   '/static/',
     'STATIC_ROOT'   :   './static',
     'HTML_ROOT'     :   './static/html',
+    "TEMPLATE_ROOT" :   './static/template',
 
     'SECRET_KEY'    :   'erweb',
 
